@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <p>Scanning Page</p>
+  <div class="container">
+  <h1>Scanning Page</h1>
+  <!-- <label for="ip_address">IP Address:</label> -->
+  <form method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+    <button type="submit">Submit</button>
+  </form>
+  </div>
 {% endblock %}

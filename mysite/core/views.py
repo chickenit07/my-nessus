@@ -4,7 +4,10 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+import xml.dom.minidom
 
+from .forms import *
+from .exploits import *
 
 def home(request):
     count = User.objects.count()
@@ -24,11 +27,33 @@ def signup(request):
         'form': form
     })
 
+class ScanningPage(LoginRequiredMixin, TemplateView):
+    template_name = 'scanning_page.html'
 
-@login_required
-def scanning(request):
-    return render(request, 'scanning_page.html')
+    def get(self, request):
+        form = ScanningForm()
+        return render(request, self.template_name,{'form':form})
 
+    def post(self, request):
+        form = ScanningForm(request.POST)
+
+        if form.is_valid():
+            #get ip addr from brower
+            ip_addr = form.cleaned_data['post']
+
+            #nmap detection
+            dst_output_nmap = nmap_scanning(ip_addr)
+            
+        else:
+            return render(request,self.template_name,{'form':form})
+
+
+        print(ip_addr)
+        args = {'form': form,'ip_addr': ip_addr}
+        return render(request, self.template_name,{'form':form},args)
 
 class ReportPage(LoginRequiredMixin, TemplateView):
     template_name = 'report_page.html'
+
+    # def get(self, request):
+    #     form = 

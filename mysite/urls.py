@@ -7,7 +7,7 @@ from mysite.core import views
 urlpatterns = [
     path('', views.home, name='home'),
     path('signup/', views.signup, name='signup'),
-    path('scanning/', views.scanning, name='scanning'),
+    path('scanning/', views.ScanningPage.as_view(), name='scanning'),
     path('report/', views.ReportPage.as_view(), name='report'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
