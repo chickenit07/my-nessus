@@ -40,17 +40,14 @@ class ScanningPage(LoginRequiredMixin, TemplateView):
         if form.is_valid():
             #get ip addr from brower
             ip_addr = form.cleaned_data['post']
+           
+            #scanning
+            scan_vsftpd_234_backdoor(ip_addr)
 
-            #nmap detection
-            dst_output_nmap = nmap_scanning(ip_addr)
-            
+            args = {'form': form,'ip_addr': ip_addr}
+            return render(request, self.template_name,{'form':form},args)            
         else:
             return render(request,self.template_name,{'form':form})
-
-
-        print(ip_addr)
-        args = {'form': form,'ip_addr': ip_addr}
-        return render(request, self.template_name,{'form':form},args)
 
 class ReportPage(LoginRequiredMixin, TemplateView):
     template_name = 'report_page.html'
