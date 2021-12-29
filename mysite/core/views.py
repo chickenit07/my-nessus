@@ -42,7 +42,7 @@ class ScanningPage(LoginRequiredMixin, TemplateView):
             ip_addr = form.cleaned_data['post']
            
             #scanning
-            scan_smb_ms17_010(ip_addr)
+            start_scan(ip_addr)
             
             args = {'form': form,'ip_addr': ip_addr}
             return render(request, self.template_name,{'form':form},args)            
