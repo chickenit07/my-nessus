@@ -2,6 +2,7 @@
     "python.analysis.extraPaths": [
         "./mysite",
         "./mysite/core",
+        "./mysite/core",
         "./mysite/core"
     ]
 }

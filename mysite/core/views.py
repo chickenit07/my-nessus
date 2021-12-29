@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 import xml.dom.minidom
 
 from .forms import *
-from .exploits import *
+from .scanner import *
 
 def home(request):
     count = User.objects.count()
@@ -42,8 +42,8 @@ class ScanningPage(LoginRequiredMixin, TemplateView):
             ip_addr = form.cleaned_data['post']
            
             #scanning
-            scan_vsftpd_234_backdoor(ip_addr)
-
+            scan_smb_ms17_010(ip_addr)
+            
             args = {'form': form,'ip_addr': ip_addr}
             return render(request, self.template_name,{'form':form},args)            
         else:
