@@ -8,6 +8,7 @@ import xml.dom.minidom
 
 from .forms import *
 from .scanner import *
+from django.http import JsonResponse
 
 def home(request):
     count = User.objects.count()
@@ -27,27 +28,27 @@ def signup(request):
         'form': form
     })
 
-class ScanningPage(LoginRequiredMixin, TemplateView):
-    template_name = 'scanning_page.html'
+# class ScanningPage(LoginRequiredMixin, TemplateView):
+#     template_name = 'scanning_page.html'
 
-    def get(self, request):
-        form = ScanningForm()
-        return render(request, self.template_name,{'form':form})
+#     def get(self, request):
+#         form = ScanningForm()
+#         return render(request, self.template_name,{'form':form})
 
-    def post(self, request):
-        form = ScanningForm(request.POST)
+#     def post(self, request):
+#         form = ScanningForm(request.POST)
 
-        if form.is_valid():
-            #get ip addr from brower
-            ip_addr = form.cleaned_data['post']
-           
-            #scanning
-            start_scan(ip_addr)
+#         if form.is_valid():
+#             #get ip addr from brower
+#             ip_addr = form.cleaned_data['post']
+
+#             #scanning
+#             results = start_scan(ip_addr)
             
-            args = {'form': form,'ip_addr': ip_addr}
-            return render(request, self.template_name,{'form':form},args)            
-        else:
-            return render(request,self.template_name,{'form':form})
+#             args = {'form': form,'ip_addr': ip_addr}
+#             return render(request, self.template_name,{'form':form},args)            
+#         else:
+#             return render(request,self.template_name,{'form':form})
 
 class ReportPage(LoginRequiredMixin, TemplateView):
     template_name = 'report_page.html'
