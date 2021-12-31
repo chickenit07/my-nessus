@@ -1,0 +1,14 @@
+auxiliary/scanner/smb/smb_ms17_010
+auxiliary/scanner/ftp/anonymous
+auxiliary/scanner/ftp/ftp_version
+auxiliary/scanner/http/dir_listing
+auxiliary/scanner/smb/smb_version
+auxiliary/scanner/snmp/snmp_enumshares
+auxiliary/scanner/smb/smb_enumusers
+auxiliary/scanner/ssh/ssh_identify_pubkeys
+auxiliary/scanner/ssh/ssh_version
+auxiliary/scanner/http/mod_negotiation_scanner
+auxiliary/scanner/http/frontpage_credential_dump
+auxiliary/scanner/http/glassfish_traversal
+auxiliary/scanner/oracle/emc_sid
+auxiliary/scanner/oracle/sid_enum

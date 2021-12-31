@@ -1,54 +1,19 @@
-from metasploit.msfrpc import MsfRpcClient
-from metasploit.msfconsole import MsfRpcConsole
-import os
+#msfrpc_pass
+password = 'password'
 
-# global global_positive_out
-# global_positive_out = list()
-# global global_console_status
-# global_console_status = False
-
-msfrpc_pass = 'password'
-
-# sigdata = 0
-
-def read_console(console_data):
-    print(console_data)
-    if '[+]' in console_data['data']:
-        sigdata = console_data['data'].rstrip().split('\n')
-        print(sigdata)
-	
-
-client = MsfRpcClient(msfrpc_pass)
-
-console = MsfRpcConsole(client, cb=read_console)
-
-console.execute('use auxiliary/scanner/smb/smb_ms17_010')
-console.execute('set RHOSTS 10.10.99.11')
-console.execute('set THREADS 20')
-console.execute('run')
-
-# os.system("py3clean .")
-# while global_console_status:
-#     print('global_console_status: ' + str(global_console_status))
-#     time.sleep(5)
-# time.sleep(5)
-
-# targets = list()
-# for line in global_positive_out:
-#     if 'FreeFloat' in line:
-#     	ip = re.findall(r'[0-9]+(?:\.[0-9]+){3}', line)[0]
-# 	targets.append(ip)
-
-
-
-# exploit = client.modules.use('auxiliary', 'scanner/smb/smb_ms17_010')
-# exploit['RHOSTS'] = '10.10.99.11'
-# exploit['RPORT'] = 445
-
-# print(exploit.execute())
-
-# alo = client
-# print(dir(alo))
-# print(alo)
-
-
+#list modules
+smb_ms17_010 = "auxiliary/scanner/smb/smb_ms17_010"
+ftp_anonymous = "auxiliary/scanner/ftp/anonymous"
+ftp_version_detect = "auxiliary/scanner/ftp/ftp_version"
+dir_list = "auxiliary/scanner/http/dir_listing"
+smb_version_detect = "auxiliary/scanner/smb/smb_version"
+snmp_enum = "auxiliary/scanner/snmp/snmp_enumshares"
+smb_enum_user = "auxiliary/scanner/smb/smb_enumusers"
+ssh_version = "auxiliary/scanner/ssh/ssh_version"
+ssh_identify_pubkeys= "auxiliary/scanner/ssh/ssh_identify_pubkeys"
+http_mod_negotiation_scanner="auxiliary/scanner/http/mod_negotiation_scanner"
+fe_creds_dump = "auxiliary/scanner/http/frontpage_credential_dump"
+# http_login_brute="auxiliary/scanner/http/http_login"
+glass_fish_lfi = "auxiliary/scanner/http/glassfish_traversal"
+tns_listener_enum = "auxiliary/scanner/oracle/sid_enum"
+sid_discovery = "auxiliary/scanner/oracle/emc_sid"

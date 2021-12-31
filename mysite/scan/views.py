@@ -17,26 +17,10 @@ class ScanningPage(LoginRequiredMixin, TemplateView):
     def get(self, request):
         form = ScanningForm()
         scans = Scan.objects.all()
-        return render(request, self.template_name,{'form':form, 'scans': scans})
-
-    def post(self, request):
-
-        if request.is_ajax and request.method == "POST":
-            form = ScanningForm(request.POST)
-
-            if form.is_valid():
-                instance = form.save()
-                ser_instance = serializers.serialize('json', [ instance, ])
-                # send to client side.
-                return JsonResponse({"instance": ser_instance}, status=200)
-            else:
-            # some form errors occured.
-                return JsonResponse({"error": form.errors}, status=400)
-
-        # some error occured
-        return JsonResponse({"error": ""}, status=400)
+        return render(request, self.template_name,{'form':form, 'scans': scans})    
         # form = ScanningForm(request.POST)
-
+        
+    # def post(self, request):
         # if form.is_valid():
         #     #get ip addr from brower
         #     ip_addr = form.cleaned_data['post']
@@ -49,6 +33,21 @@ class ScanningPage(LoginRequiredMixin, TemplateView):
         #     return render(request, self.template_name,{'form':form},args)            
         # else:
         #     return render(request,self.template_name,{'form':form})
+class AjaxScan(LoginRequiredMixin, TemplateView):
+    def post(self, request):
+        if request.is_ajax and request.method == "POST":
+            form = ScanningForm(request.POST)
+
+            if form.is_valid():
+                instance = form.save()
+                ser_instance = serializers.serialize('json', [ instance, ])
+                # send to client side.
+                return JsonResponse({"instance": ser_instance}, status=200)
+            else: 
+            # some form errors occured.
+                return JsonResponse({"error": form.errors}, status=400)
+        # some error occured
+        return JsonResponse({"error": ""}, status=400)
 
 class ReportPage(LoginRequiredMixin, TemplateView):
     template_name = 'report_page.html'
