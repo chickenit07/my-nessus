@@ -1,13 +1,15 @@
 from metasploit.msfrpc import MsfRpcClient
 from metasploit.msfconsole import MsfRpcConsole
-import os
+import os.path
 from .config import password
+
+BASE = os.path.dirname(os.path.abspath(__file__))
 
 def read_console(console_data):
     global console_status
     console_status = console_data['busy']
     # print(console_status)
-    # print(console_data)
+    print(console_data)
     if '[+]' in console_data['data']:
         global sigdata
         sigdata = console_data['data'].rstrip().split('\n')
@@ -36,7 +38,7 @@ def start_scan(ip_addr):
     console = MsfRpcConsole(client, cb=read_console)
 
     # read modules file then start scan 
-    file = open("modules.txt", "r")
+    file = open(os.path.join(BASE, "modules.txt"))
     modules = file.readlines()
 
     count = 0

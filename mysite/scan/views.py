@@ -8,7 +8,8 @@ from django.core import serializers
 from django.http import JsonResponse
 
 from .forms import *
-from .scanner import *
+from .scanner import start_scan
+
 
 # Create your views here.
 class ScanningPage(LoginRequiredMixin, TemplateView):
@@ -18,28 +19,16 @@ class ScanningPage(LoginRequiredMixin, TemplateView):
         form = ScanningForm()
         scans = Scan.objects.all()
         return render(request, self.template_name,{'form':form, 'scans': scans})    
-        # form = ScanningForm(request.POST)
         
-    # def post(self, request):
-        # if form.is_valid():
-        #     #get ip addr from brower
-        #     ip_addr = form.cleaned_data['post']
-
-        #     if form.is_valid():
-        #     #scanning
-        #     results = start_scan(ip_addr)
-            
-        #     args = {'form': form,'ip_addr': ip_addr}
-        #     return render(request, self.template_name,{'form':form},args)            
-        # else:
-        #     return render(request,self.template_name,{'form':form})
 class AjaxScan(LoginRequiredMixin, TemplateView):
     def post(self, request):
         if request.is_ajax and request.method == "POST":
             form = ScanningForm(request.POST)
 
             if form.is_valid():
-                instance = form.save()
+                instance = form.save(commit=False)
+                print(instance.serializable_value)
+                # start_scan(instance.host)
                 ser_instance = serializers.serialize('json', [ instance, ])
                 # send to client side.
                 return JsonResponse({"instance": ser_instance}, status=200)
@@ -48,6 +37,3 @@ class AjaxScan(LoginRequiredMixin, TemplateView):
                 return JsonResponse({"error": form.errors}, status=400)
         # some error occured
         return JsonResponse({"error": ""}, status=400)
-
-class ReportPage(LoginRequiredMixin, TemplateView):
-    template_name = 'report_page.html'
