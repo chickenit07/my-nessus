@@ -27,8 +27,8 @@ class AjaxScan(LoginRequiredMixin, TemplateView):
 
             if form.is_valid():
                 instance = form.save(commit=False)
-                print(instance.serializable_value)
-                # start_scan(instance.host)
+                print(instance.host)
+                start_scan(instance.host)
                 ser_instance = serializers.serialize('json', [ instance, ])
                 # send to client side.
                 return JsonResponse({"instance": ser_instance}, status=200)

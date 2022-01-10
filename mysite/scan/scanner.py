@@ -1,13 +1,12 @@
 from metasploit.msfrpc import MsfRpcClient
 from metasploit.msfconsole import MsfRpcConsole
-import os.path
+
 from .config import password
+import os.path
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 
 def read_console(console_data):
-    global console_status
-    console_status = console_data['busy']
     # print(console_status)
     print(console_data)
     if '[+]' in console_data['data']:
@@ -27,8 +26,6 @@ def scan_template(console, ip_addr, modules):
 def start_scan(ip_addr):
     global vuln_list
     vuln_list = list()
-    global console_status
-    console_status = False 
 
     # msfrpcd password. This password could be taken when starting msfrpcd daemon by this command: 
     # msfrpcd -P password -n -f -a 127.0.0.1
