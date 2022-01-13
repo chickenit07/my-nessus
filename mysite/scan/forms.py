@@ -1,5 +1,5 @@
 from django import forms
-from mysite.core.models import Scan
+from .models import Scan
 
 class ScanningForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

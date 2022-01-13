@@ -19,16 +19,17 @@ def read_console(console_data):
         for line in sigdata:
             if '[+]' in line:
                 vuln_list.append(line)
-    return vuln_list
-    
+    # print(vuln_list)
+#template to run msf command
 def scan_template(console, ip_addr, modules):
     # print('scan_template')
     console.execute('use ' + modules)
     console.execute('set RHOSTS ' + ip_addr)
     console.execute('run')
 
-
-def main(ip_addr):
+def start_scan(ip_addr):
+    # msfrpcd password. This password could be taken when starting msfrpcd daemon by this command: 
+    # msfrpcd -P password -n -f -a 127.0.0.1
     msfrpc_pass = password
 
     client = MsfRpcClient(msfrpc_pass)
@@ -43,9 +44,10 @@ def main(ip_addr):
         count += 1
         scan_template(console, ip_addr, module)
         # print(module)
-    # print('vuln_list')
-    # print(vuln_list)
+    print('vuln_list')
+    print(vuln_list)
     return json.dumps(vuln_list)
+    # print("done")
+#debug    
+# start_scan("10.10.39.235")
 
-if __name__ == '__main__':
-    main(sys.argv[1:])

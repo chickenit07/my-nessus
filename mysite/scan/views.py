@@ -6,10 +6,12 @@ from django.views.generic import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core import serializers
 from django.http import JsonResponse
+import simplejson as json
+import os
 
 from .forms import *
-from .scanner import start_scan
-
+import mysite.scan.scanner as scanner
+# from .scanner import start_scan
 
 # Create your views here.
 class ScanningPage(LoginRequiredMixin, TemplateView):
@@ -22,13 +24,18 @@ class ScanningPage(LoginRequiredMixin, TemplateView):
         
 class AjaxScan(LoginRequiredMixin, TemplateView):
     def post(self, request):
-        if request.is_ajax and request.method == "POST":
+        if request.headers['X-Requested-With']== 'XMLHttpRequest' and request.method == "POST":
+            # print('test')
             form = ScanningForm(request.POST)
 
             if form.is_valid():
                 instance = form.save(commit=False)
-                print(instance.host)
-                start_scan(instance.host)
+                # vuln_list = start_scan(instance.host)
+                vuln_list = scanner.main(instance.host)
+                # print('done')
+                # print(vuln_list)
+                # instance.vuln_arr = vuln_list
+                # instance.save()
                 ser_instance = serializers.serialize('json', [ instance, ])
                 # send to client side.
                 return JsonResponse({"instance": ser_instance}, status=200)

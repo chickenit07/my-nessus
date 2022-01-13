@@ -53,6 +53,9 @@
       // make POST ajax call
       $.ajax({
         type: "POST",
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+        },
         url: "{% url 'ajax_scan' %}",
         data: serializedData,
         dataType: 'json',
