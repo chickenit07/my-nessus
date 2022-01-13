@@ -4,6 +4,7 @@ import simplejson as json
 
 from .config import password
 import os.path
+import time
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 
@@ -12,6 +13,10 @@ vuln_list = list()
 
 def read_console(console_data):
     # print('read_console')
+    global global_console_status
+    global_console_status = console_data['busy']
+
+    # print(global_console_status)
     if '[+]' in console_data['data']:
         global sigdata
         sigdata = console_data['data'].rstrip().split('\n')
@@ -19,29 +24,32 @@ def read_console(console_data):
         for line in sigdata:
             if '[+]' in line:
                 vuln_list.append(line)
-    return vuln_list
     
 def scan_template(console, ip_addr, modules):
     # print('scan_template')
     console.execute('use ' + modules)
     console.execute('set RHOSTS ' + ip_addr)
     console.execute('run')
-
+    time.sleep(5)
 
 def main(ip_addr):
     msfrpc_pass = password
 
     client = MsfRpcClient(msfrpc_pass)
+    # cb - callback function, executes when data arrives to console
     console = MsfRpcConsole(client, cb=read_console)
 
     # read modules file then start scan 
     file = open(os.path.join(BASE, "modules.txt"))
     modules = file.readlines()
     
-    count = 1
+    count = 0
     for module in modules:
         count += 1
+        print("Loading " + "{0:.0f}%".format(count/len(modules)*100))
         scan_template(console, ip_addr, module)
+        while global_console_status:
+            time.sleep(3)   
         # print(module)
     # print('vuln_list')
     # print(vuln_list)

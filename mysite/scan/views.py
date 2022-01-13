@@ -24,7 +24,7 @@ class ScanningPage(LoginRequiredMixin, TemplateView):
         
 class AjaxScan(LoginRequiredMixin, TemplateView):
     def post(self, request):
-        if request.headers['X-Requested-With']== 'XMLHttpRequest' and request.method == "POST":
+        if request.headers['X-Requested-With'] == 'XMLHttpRequest' and request.method == "POST":
             # print('test')
             form = ScanningForm(request.POST)
 
@@ -32,6 +32,9 @@ class AjaxScan(LoginRequiredMixin, TemplateView):
                 instance = form.save(commit=False)
                 # vuln_list = start_scan(instance.host)
                 vuln_list = scanner.main(instance.host)
+                instance.vuln_arr = vuln_list
+                instance.scan_status = "Completed"
+                instance.save()
                 # print('done')
                 # print(vuln_list)
                 # instance.vuln_arr = vuln_list

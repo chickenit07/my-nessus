@@ -18,9 +18,12 @@
   <table class="table table-striped table-sm" id="recent-scan">
     <thead>
       <tr>
-        {% comment %} <th>Id</th> {% endcomment %}
+        {% comment %}
+        <th>Id</th>
+        {% endcomment %}
         <th>Scan name</th>
         <th>Host</th>
+        <th>Vuln </th>
         <th>Date</th>
         <th>Status</th>
       </tr>
@@ -30,6 +33,7 @@
       <tr>
         <td>{{scan.scan_name}}</td>
         <td>{{scan.host}}</td>
+        <td>{{scan.vuln_arr}}</td>
         <td>{{scan.scan_date | date:"Y-m-d"}}</td>
         <td>{{scan.scan_status}}</td>
       </tr>
@@ -44,7 +48,7 @@
         request to server and after successfull submission
         display the object.
     */
-  $(document).ready(function() {
+  $(document).ready(function () {
     $("#scan-form").submit(function (e) {
       // preventing from page reload and default actions
       e.preventDefault();
@@ -58,7 +62,7 @@
         },
         url: "{% url 'ajax_scan' %}",
         data: serializedData,
-        dataType: 'json',
+        dataType: "json",
         success: function (response) {
           // on successfull creating object
           // 1. clear the form.
@@ -72,13 +76,16 @@
           var scans = instance[0]["fields"];
 
           $("#recent-scan tbody").prepend(
-              `<tr> 
-                {% comment %} <td>${scans["scan_id"] || ""}</td> {% endcomment %}
+            `<tr> 
+                {% comment %} <td>${
+                  scans["scan_id"] || ""
+                }</td> {% endcomment %}
                 <td>${scans["scan_name"] || ""}</td>
                 <td>${scans["host"] || ""}</td>
                 <td>${scans["scan_date"] || ""}</td>
                 <td>${scans["scan_status"] || ""}</td>
-                </tr>`);
+                </tr>`
+          );
         },
         error: function (response) {
           // alert the error if any error occured
