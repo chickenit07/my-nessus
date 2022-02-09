@@ -30,18 +30,24 @@ class AjaxScan(LoginRequiredMixin, TemplateView):
 
             if form.is_valid():
                 instance = form.save(commit=False)
-                # vuln_list = start_scan(instance.host)
-                vuln_list = scanner.main(instance.host)
-                instance.vuln_arr = vuln_list
-                instance.scan_status = "Completed"
-                instance.save()
-                # print('done')
-                # print(vuln_list)
-                # instance.vuln_arr = vuln_list
-                # instance.save()
-                ser_instance = serializers.serialize('json', [ instance, ])
-                # send to client side.
-                return JsonResponse({"instance": ser_instance}, status=200)
+                try:
+                    # vuln_list = start_scan(instance.host)
+                    vuln_list = scanner.main(instance.host)
+                    instance.vuln_arr = vuln_list
+
+                    instance.scan_status = "Completed"
+
+                    instance.save()
+
+                    ser_instance = serializers.serialize('json', [ instance, ])
+                    # send to client side.
+                    return JsonResponse({"instance": ser_instance}, status=200)
+                except Exception:
+                    instance.scan_status = "Corrupted"
+                    instance.save()
+                    ser_instance = serializers.serialize('json', [ instance, ])
+                    # send to client side.
+                    return JsonResponse({"instance": ser_instance}, status=200)
             else: 
             # some form errors occured.
                 return JsonResponse({"error": form.errors}, status=400)
