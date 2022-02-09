@@ -7,9 +7,8 @@ import os.path
 import time
 
 BASE = os.path.dirname(os.path.abspath(__file__))
-
-global vuln_list
-vuln_list = list()
+vuln_list = []
+sigdata=[]
 
 def read_console(console_data):
     # print('read_console')
@@ -18,7 +17,7 @@ def read_console(console_data):
 
     # print(global_console_status)
     if '[+]' in console_data['data']:
-        global sigdata
+        
         sigdata = console_data['data'].rstrip().split('\n')
 
         for line in sigdata:
@@ -53,7 +52,22 @@ def main(ip_addr):
         # print(module)
     # print('vuln_list')
     # print(vuln_list)
-    return json.dumps(vuln_list)
+    tmp = json.dumps(vuln_list)
+    vuln_list.clear()
+    return tmp
 
 if __name__ == '__main__':
     main(sys.argv[1:])
+
+# auxiliary/scanner/snmp/snmp_enumshares
+# auxiliary/scanner/smb/smb_enumusers
+# auxiliary/scanner/ssh/ssh_identify_pubkeys
+# auxiliary/scanner/ssh/ssh_version
+# auxiliary/scanner/http/mod_negotiation_scanner
+# auxiliary/scanner/http/frontpage_credential_dump
+# auxiliary/scanner/http/glassfish_traversal
+# auxiliary/scanner/oracle/emc_sid
+# auxiliary/scanner/oracle/sid_enum
+# auxiliary/scanner/ftp/anonymous
+# auxiliary/scanner/ftp/ftp_version
+# auxiliary/scanner/http/dir_listing
