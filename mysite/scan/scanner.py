@@ -19,7 +19,6 @@ def read_console(console_data):
     if '[+]' in console_data['data']:
         
         sigdata = console_data['data'].rstrip().split('\n')
-
         for line in sigdata:
             if '[+]' in line:
                 vuln_list.append(line)

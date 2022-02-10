@@ -1,6 +1,5 @@
-{% extends 'base.html' %} {% block content %}
-{% load static %}
-<link rel="stylesheet"  href="{%  static  'css/scan.css'  %}">
+{% extends 'base.html' %} {% block content %} {% load static %}
+<link rel="stylesheet" href="{%  static  'css/scan.css'  %}" />
 <div class="container">
   <h1>Scanning Page</h1>
   <form id="scan-form" method="POST">
@@ -29,12 +28,12 @@
       </tr>
     </thead>
     <tbody>
-      {% for scan in scans %}
+      {% for scan in scans reversed %}
       <tr>
         <td class="col-1">{{scan.scan_name}}</td>
         <td class="col-1">{{scan.host}}</td>
         <td class="col-6">{{scan.vuln_list}}</td>
-        <td class="col-2">{{scan.scan_date | date:"Y-m-d"}}</td>
+        <td class="col-1">{{scan.scan_date | date:"Y-m-d"}}</td>
         <td class="col-1">{{scan.scan_status}}</td>
       </tr>
       {% endfor %}
@@ -78,17 +77,25 @@
           var instance = JSON.parse(response["instance"]);
 
           var scans = instance[0]["fields"];
+          var vuln_list = scans["vuln_list"];
+        
+          vuln_arr = new Array()
+
+          //remove [] and double quote, then split string into an array by comma.
+          vuln_arr = vuln_list.slice(1,-1).replaceAll('"', '').split(',')
+
+          alert(tmp)
           
           $("#recent-scan tbody").prepend(
             `<tr> 
                 {% comment %} <td>${
                   scans["scan_id"] || ""
                 }</td> {% endcomment %}
-                <td>${scans["scan_name"] || ""}</td>
-                <td>${scans["host"] || ""}</td>
-                <td>${scans["vuln_list"] || ""}</td>
-                <td>${scans["scan_date"] || ""}</td>
-                <td>${scans["scan_status"] || ""}</td>
+                <td>${scans["scan_name"] || "None"}</td>
+                <td>${scans["host"] || "None"}</td> 
+                <td>${scans["vuln_list"] || "None"}</td>
+                <td>${scans["scan_date"] || "None"}</td>
+                <td>${scans["scan_status"] || "None"}</td>
                 </tr>`
           );
         },

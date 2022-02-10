@@ -34,13 +34,14 @@ class AjaxScan(LoginRequiredMixin, TemplateView):
                     # vuln_list = start_scan(instance.host)
                     vuln_list = scanner.main(instance.host)
                     instance.vuln_list = vuln_list
-
+                    print(type(instance.vuln_list))
                     instance.scan_status = "Completed"
 
                     instance.save()
 
                     ser_instance = serializers.serialize('json', [ instance, ])
                     # send to client side.
+                    # print(ser_instance)
                     return JsonResponse({"instance": ser_instance}, status=200)
                 except Exception:
                     instance.scan_status = "Corrupted"
