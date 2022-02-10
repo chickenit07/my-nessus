@@ -33,7 +33,7 @@
       <tr>
         <td class="col-1">{{scan.scan_name}}</td>
         <td class="col-1">{{scan.host}}</td>
-        <td class="col-6">{{scan.vuln_arr}}</td>
+        <td class="col-6">{{scan.vuln_list}}</td>
         <td class="col-2">{{scan.scan_date | date:"Y-m-d"}}</td>
         <td class="col-1">{{scan.scan_status}}</td>
       </tr>
@@ -79,8 +79,6 @@
 
           var scans = instance[0]["fields"];
           
-
-
           $("#recent-scan tbody").prepend(
             `<tr> 
                 {% comment %} <td>${
@@ -88,7 +86,7 @@
                 }</td> {% endcomment %}
                 <td>${scans["scan_name"] || ""}</td>
                 <td>${scans["host"] || ""}</td>
-                <td>${scans["vuln_arr"] || ""}</td>
+                <td>${scans["vuln_list"] || ""}</td>
                 <td>${scans["scan_date"] || ""}</td>
                 <td>${scans["scan_status"] || ""}</td>
                 </tr>`

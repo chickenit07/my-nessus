@@ -33,7 +33,7 @@ class AjaxScan(LoginRequiredMixin, TemplateView):
                 try:
                     # vuln_list = start_scan(instance.host)
                     vuln_list = scanner.main(instance.host)
-                    instance.vuln_arr = vuln_list
+                    instance.vuln_list = vuln_list
 
                     instance.scan_status = "Completed"
 

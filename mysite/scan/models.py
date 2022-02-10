@@ -22,9 +22,9 @@ class Scan(models.Model):
     scan_date = models.DateTimeField(auto_now_add=True)
     scan_status = models.CharField(max_length=100, default="Scanning", editable=False)
     host = models.CharField(max_length=100)
-    # vuln_arr = ArrayField(models.CharField(max_length=100), editable=False)
-    # vuln_arr = ListCharField(models.CharField(max_length=100), default="", editable=False)
-    vuln_arr = models.TextField(null=True, editable=False)
+    # vuln_list = ArrayField(models.CharField(max_length=100), editable=False)
+    # vuln_list = ListCharField(models.CharField(max_length=100), default="", editable=False)
+    vuln_list = models.TextField(null=True, editable=False)
     
     # user_id = models.IntegerField()
     # user_id
