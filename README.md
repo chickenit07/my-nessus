@@ -1,1 +1,3 @@
 # my-nessus
+another small one...
+Created for automating scanning with the help of msf
